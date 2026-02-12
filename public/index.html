@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Merje - Parking Finder</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #fff; font-family: 'Instrument Sans', system-ui, sans-serif; color: #1a1a1a; }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;700;900&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+var useState = React.useState;
+
+
+var LOGO = "data:image/jpeg;base64,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";
+
+function App() {
+  var s1 = useState(""); var city = s1[0]; var setCity = s1[1];
+  var s2 = useState(null); var results = s2[0]; var setResults = s2[1];
+  var s3 = useState(false); var loading = s3[0]; var setLoading = s3[1];
+  var s4 = useState(null); var expanded = s4[0]; var setExpanded = s4[1];
+  var s5 = useState(null); var selType = s5[0]; var setSelType = s5[1];
+  var s6 = useState(""); var status = s6[0]; var setStatus = s6[1];
+
+  function apiCall(msgs, maxTok) {
+    return fetch("/api/claude", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-haiku-4-5-20251001",
+        max_tokens: maxTok || 8000,
+        messages: msgs
+      })
+    }).then(function(r) { return r.json(); })
+      .then(function(d) {
+        var text = "";
+        for (var i = 0; i < d.content.length; i++) {
+          if (d.content[i].text) text += d.content[i].text;
+        }
+        return text.replace(/```json/g, "").replace(/```/g, "").trim();
+      });
+  }
+
+  function search() {
+    if (!city.trim()) return;
+    setLoading(true); setSelType(null); setExpanded(null); setStatus("Searching for parking facilities...");
+    var prompt = 'Find ALL parking lots, parking garages, and parking areas in and around "' + city + '". Be extremely thorough. For EACH parking facility, provide:\n\n1. Name\n2. Type: one of "Parking Garage", "Surface Lot", "Metered Street Parking Zone", "Park & Ride", "Event Parking", "Airport Parking", "Hospital/Medical Parking", "Municipal Lot", "Private Lot"\n3. Ownership: "City/Municipal", "Private", "County", "State", "University", "Hospital", "Airport Authority"\n4. Address\n5. Approximate capacity (number of spaces if known, otherwise estimate)\n6. Rates (hourly, daily, monthly if known - use "Varies" if unsure)\n7. Hours of operation (e.g. "24/7", "6AM-10PM", "Event days only")\n8. GPS coordinates (latitude, longitude)\n9. Notes (EV charging, handicap accessible, covered/uncovered, valet, etc.)\n\nFind at least 30-50 facilities. Include ALL types: city-owned garages, private lots, hospital parking, university parking, airport parking, park & rides, metered zones, event parking near stadiums/arenas.\n\nReturn ONLY valid JSON as an array: [{"name":"","type":"","ownership":"","address":"","capacity":"","rates":"","hours":"","latitude":0,"longitude":0,"notes":""}]';
+    apiCall([{ role: "user", content: prompt }])
+      .then(function(t) {
+        var parsed = JSON.parse(t);
+        setResults({ city: city, facilities: parsed });
+        setLoading(false); setStatus("");
+      })
+      .catch(function(e) {
+        setResults({ city: city, facilities: [] });
+        setLoading(false); setStatus("Error - try again");
+        setTimeout(function() { setStatus(""); }, 3000);
+      });
+  }
+
+  function csvEsc(s) {
+    var v = String(s == null ? "" : s);
+    if (v.indexOf(",") >= 0 || v.indexOf('"') >= 0 || v.indexOf("\n") >= 0) return '"' + v.replace(/"/g, '""') + '"';
+    return v;
+  }
+
+  function xmlEsc(s) {
+    return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
+  function download(content, name, type) {
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([content], { type: type }));
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
+
+  function dlExcel() {
+    if (!results || !results.facilities.length) return;
+    setStatus("Building Excel...");
+    var f = results.facilities;
+    var x = '<?xml version="1.0" encoding="UTF-8"?><?mso-application progid="Excel.Sheet"?><Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"><Styles><Style ss:ID="H"><Font ss:Bold="1" ss:Size="11" ss:Color="#FFFFFF" ss:FontName="Arial"/><Interior ss:Color="#2C5F7C" ss:Pattern="Solid"/><Alignment ss:Horizontal="Center" ss:WrapText="1"/></Style><Style ss:ID="H2"><Font ss:Bold="1" ss:Size="11" ss:Color="#FFFFFF" ss:FontName="Arial"/><Interior ss:Color="#3D7A4A" ss:Pattern="Solid"/><Alignment ss:Horizontal="Center" ss:WrapText="1"/></Style><Style ss:ID="N"><Font ss:Size="10" ss:FontName="Arial"/><Alignment ss:WrapText="1" ss:Vertical="Top"/></Style><Style ss:ID="T"><Font ss:Bold="1" ss:Size="14" ss:FontName="Arial" ss:Color="#333333"/></Style></Styles>';
+    x += '<Worksheet ss:Name="Parking Facilities"><Table><Column ss:Width="200"/><Column ss:Width="120"/><Column ss:Width="120"/><Column ss:Width="250"/><Column ss:Width="80"/><Column ss:Width="150"/><Column ss:Width="120"/><Column ss:Width="200"/>';
+    x += '<Row><Cell ss:StyleID="T"><Data ss:Type="String">Parking Inventory - ' + xmlEsc(results.city) + '</Data></Cell></Row><Row/>';
+    x += '<Row><Cell ss:StyleID="H"><Data ss:Type="String">Name</Data></Cell><Cell ss:StyleID="H"><Data ss:Type="String">Type</Data></Cell><Cell ss:StyleID="H"><Data ss:Type="String">Ownership</Data></Cell><Cell ss:StyleID="H"><Data ss:Type="String">Address</Data></Cell><Cell ss:StyleID="H"><Data ss:Type="String">Capacity</Data></Cell><Cell ss:StyleID="H"><Data ss:Type="String">Rates</Data></Cell><Cell ss:StyleID="H"><Data ss:Type="String">Hours</Data></Cell><Cell ss:StyleID="H"><Data ss:Type="String">Notes</Data></Cell></Row>';
+    f.forEach(function(p) {
+      x += '<Row><Cell ss:StyleID="N"><Data ss:Type="String">' + xmlEsc(p.name) + '</Data></Cell><Cell ss:StyleID="N"><Data ss:Type="String">' + xmlEsc(p.type) + '</Data></Cell><Cell ss:StyleID="N"><Data ss:Type="String">' + xmlEsc(p.ownership) + '</Data></Cell><Cell ss:StyleID="N"><Data ss:Type="String">' + xmlEsc(p.address) + '</Data></Cell><Cell ss:StyleID="N"><Data ss:Type="String">' + xmlEsc(p.capacity) + '</Data></Cell><Cell ss:StyleID="N"><Data ss:Type="String">' + xmlEsc(p.rates) + '</Data></Cell><Cell ss:StyleID="N"><Data ss:Type="String">' + xmlEsc(p.hours) + '</Data></Cell><Cell ss:StyleID="N"><Data ss:Type="String">' + xmlEsc(p.notes) + '</Data></Cell></Row>';
+    });
+    x += '</Table></Worksheet>';
+    x += '<Worksheet ss:Name="GIS Coordinates"><Table><Column ss:Width="200"/><Column ss:Width="120"/><Column ss:Width="120"/><Column ss:Width="100"/><Column ss:Width="100"/><Column ss:Width="250"/><Column ss:Width="250"/>';
+    x += '<Row><Cell ss:StyleID="H2"><Data ss:Type="String">Name</Data></Cell><Cell ss:StyleID="H2"><Data ss:Type="String">Type</Data></Cell><Cell ss:StyleID="H2"><Data ss:Type="String">Ownership</Data></Cell><Cell ss:StyleID="H2"><Data ss:Type="String">Latitude</Data></Cell><Cell ss:StyleID="H2"><Data ss:Type="String">Longitude</Data></Cell><Cell ss:StyleID="H2"><Data ss:Type="String">Address</Data></Cell><Cell ss:StyleID="H2"><Data ss:Type="String">WKT</Data></Cell></Row>';
+    f.forEach(function(p) {
+      x += '<Row><Cell ss:StyleID="N"><Data ss:Type="String">' + xmlEsc(p.name) + '</Data></Cell><Cell ss:StyleID="N"><Data ss:Type="String">' + xmlEsc(p.type) + '</Data></Cell><Cell ss:StyleID="N"><Data ss:Type="String">' + xmlEsc(p.ownership) + '</Data></Cell><Cell ss:StyleID="N"><Data ss:Type="Number">' + p.latitude + '</Data></Cell><Cell ss:StyleID="N"><Data ss:Type="Number">' + p.longitude + '</Data></Cell><Cell ss:StyleID="N"><Data ss:Type="String">' + xmlEsc(p.address) + '</Data></Cell><Cell ss:StyleID="N"><Data ss:Type="String">POINT (' + p.longitude + ' ' + p.latitude + ')</Data></Cell></Row>';
+    });
+    x += '</Table></Worksheet></Workbook>';
+    download(x, "Parking_" + results.city.replace(/\s+/g, "_") + ".xls", "application/vnd.ms-excel");
+    setStatus("Excel downloaded"); setTimeout(function() { setStatus(""); }, 3000);
+  }
+
+  function dlCSV() {
+    if (!results || !results.facilities.length) return;
+    setStatus("Building CSV...");
+    var csv = "Name,Type,Ownership,Latitude,Longitude,Address,Capacity,Rates,Hours,Notes\n";
+    results.facilities.forEach(function(p) {
+      csv += csvEsc(p.name) + "," + csvEsc(p.type) + "," + csvEsc(p.ownership) + "," + csvEsc(p.latitude) + "," + csvEsc(p.longitude) + "," + csvEsc(p.address) + "," + csvEsc(p.capacity) + "," + csvEsc(p.rates) + "," + csvEsc(p.hours) + "," + csvEsc(p.notes) + "\n";
+    });
+    download(csv, "Parking_GIS_" + results.city.replace(/\s+/g, "_") + ".csv", "text/csv;charset=utf-8;");
+    setStatus("CSV ready - Import into Google My Maps"); setTimeout(function() { setStatus(""); }, 5000);
+  }
+
+  var TYPE_COLORS = {
+    "Parking Garage":"#2C5F7C","Surface Lot":"#8B6914","Metered Street Parking Zone":"#C05621",
+    "Park & Ride":"#3D7A4A","Event Parking":"#9B2226","Airport Parking":"#4A5568",
+    "Hospital/Medical Parking":"#7B2CBF","Municipal Lot":"#6B8F3C","Private Lot":"#8B7355"
+  };
+
+  var TYPE_ICONS = {
+    "Parking Garage":"P","Surface Lot":"S","Metered Street Parking Zone":"M",
+    "Park & Ride":"PR","Event Parking":"E","Airport Parking":"A",
+    "Hospital/Medical Parking":"H","Municipal Lot":"ML","Private Lot":"PL"
+  };
+
+  var facilities = results ? results.facilities : [];
+  var types = []; var seenTypes = {};
+  facilities.forEach(function(f) { if (!seenTypes[f.type]) { seenTypes[f.type] = true; types.push(f.type); } });
+  var filtered = selType ? facilities.filter(function(f) { return f.type === selType; }) : facilities;
+
+  var stats = {};
+  facilities.forEach(function(f) {
+    if (!stats[f.ownership]) stats[f.ownership] = 0;
+    stats[f.ownership]++;
+  });
+
+  return (
+    <div style={{minHeight:"100vh",background:"#fff",fontFamily:"'Instrument Sans',system-ui,sans-serif",color:"#1a1a1a"}}>
+      <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;700;900&display=swap" rel="stylesheet"/>
+      <style>{"@keyframes spin{to{transform:rotate(360deg)}}@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}input::placeholder{color:#aaa}.dlb{transition:all .2s}.dlb:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.1)}"}</style>
+
+      <div style={{maxWidth:1100,margin:"0 auto",padding:"0 24px"}}>
+        <header style={{paddingTop:40,paddingBottom:results?24:60,borderBottom:"1px solid #eee",marginBottom:32}}>
+          <img src={LOGO} alt="Merje" style={{height:32,marginBottom:20,display:"block"}} />
+          <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:8}}>
+            <div style={{width:6,height:6,borderRadius:"50%",background:"#2C5F7C"}}/>
+            <span style={{fontSize:11,fontWeight:600,letterSpacing:3,textTransform:"uppercase",color:"#8B7355"}}>Community Wayfinding Program</span>
+          </div>
+          <h1 style={{fontFamily:"'Playfair Display',Georgia,serif",fontSize:results?32:48,fontWeight:900,lineHeight:1.1,margin:"0 0 12px",color:"#1a1a1a"}}>Parking Finder</h1>
+          {!results && <p style={{fontSize:15,color:"#666",maxWidth:560,lineHeight:1.6,margin:0}}>Search any city to discover all parking facilities — garages, surface lots, metered zones, park & rides, and more. Includes rates, hours, ownership, and GPS coordinates for GIS mapping.</p>}
+        </header>
+
+        <div style={{display:"flex",gap:12,marginBottom:20}}>
+          <div style={{flex:1,background:"#f8f8f8",border:"1px solid #ddd",borderRadius:10}}>
+            <input type="text" value={city} onChange={function(e){setCity(e.target.value)}} onKeyDown={function(e){if(e.key==="Enter")search()}} placeholder="Enter a city (e.g. Philadelphia, Austin, San Diego)" style={{width:"100%",padding:"16px 18px",background:"transparent",border:"none",color:"#1a1a1a",fontSize:15,fontFamily:"inherit",outline:"none",boxSizing:"border-box"}}/>
+          </div>
+          <button onClick={search} disabled={loading||!city.trim()} style={{padding:"16px 28px",background:loading?"#ccc":"#2C5F7C",color:"#fff",border:"none",borderRadius:10,fontSize:14,fontWeight:700,cursor:loading?"wait":"pointer",whiteSpace:"nowrap"}}>{loading?"Searching...":"Search City"}</button>
+        </div>
+
+        <div style={{display:"flex",flexWrap:"wrap",gap:10,marginBottom:30,alignItems:"center"}}>
+          {results && facilities.length > 0 && <div style={{display:"contents"}}>
+            <button className="dlb" onClick={dlExcel} style={{background:"#3D7A4A",border:"none",color:"#fff",padding:"10px 18px",borderRadius:8,fontSize:13,fontWeight:600,cursor:"pointer"}}>Download Excel</button>
+            <button className="dlb" onClick={dlCSV} style={{background:"#2C5F7C",border:"none",color:"#fff",padding:"10px 18px",borderRadius:8,fontSize:13,fontWeight:600,cursor:"pointer"}}>Download Google My Maps CSV</button>
+          </div>}
+          {(status) && <div style={{display:"flex",alignItems:"center",gap:8,fontSize:12,color:"#2C5F7C",fontWeight:500,animation:loading?"pulse 1.5s ease infinite":"none"}}>
+            {loading && <div style={{width:12,height:12,border:"2px solid #ddd",borderTopColor:"#2C5F7C",borderRadius:"50%",animation:"spin .8s linear infinite",flexShrink:0}}/>}
+            {status}
+          </div>}
+        </div>
+
+        {loading && <div style={{textAlign:"center",padding:60}}>
+          <div style={{width:36,height:36,border:"3px solid #eee",borderTopColor:"#2C5F7C",borderRadius:"50%",animation:"spin .8s linear infinite",margin:"0 auto 16px"}}/>
+          <p style={{color:"#888",fontSize:14}}>Finding parking facilities in {city}...</p>
+          <p style={{color:"#bbb",fontSize:12}}>This may take 10-15 seconds</p>
+        </div>}
+
+        {results && !loading && <div>
+          <div style={{display:"flex",alignItems:"baseline",gap:12,marginBottom:16}}>
+            <h2 style={{fontFamily:"'Playfair Display',Georgia,serif",fontSize:26,fontWeight:700,margin:0}}>{results.city}</h2>
+            <span style={{fontSize:13,color:"#2C5F7C",fontWeight:600}}>{facilities.length} parking facilities</span>
+          </div>
+
+          {Object.keys(stats).length > 0 && <div style={{display:"flex",flexWrap:"wrap",gap:10,marginBottom:20}}>
+            {Object.entries(stats).map(function(e) {
+              return <div key={e[0]} style={{background:"#f8f8f8",border:"1px solid #eee",borderRadius:8,padding:"10px 16px"}}>
+                <div style={{fontSize:18,fontWeight:700,color:"#2C5F7C"}}>{e[1]}</div>
+                <div style={{fontSize:11,color:"#888",fontWeight:500}}>{e[0]}</div>
+              </div>;
+            })}
+          </div>}
+
+          {types.length > 0 && <div style={{display:"flex",flexWrap:"wrap",gap:8,marginBottom:28}}>
+            <button onClick={function(){setSelType(null)}} style={{padding:"8px 16px",borderRadius:20,fontSize:12,fontWeight:600,cursor:"pointer",border:selType===null?"1px solid #2C5F7C":"1px solid #ddd",background:selType===null?"#e8f0f8":"#f8f8f8",color:selType===null?"#2C5F7C":"#666"}}>All ({facilities.length})</button>
+            {types.map(function(t) {
+              var n = facilities.filter(function(f){return f.type===t}).length;
+              var col = TYPE_COLORS[t] || "#2C5F7C";
+              return <button key={t} onClick={function(){setSelType(selType===t?null:t)}} style={{padding:"8px 16px",borderRadius:20,fontSize:12,fontWeight:600,cursor:"pointer",border:selType===t?"1px solid "+col:"1px solid #ddd",background:selType===t?col+"15":"#f8f8f8",color:selType===t?col:"#666"}}>{t} ({n})</button>;
+            })}
+          </div>}
+
+          <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(320px,1fr))",gap:14,paddingBottom:60}}>
+            {filtered.map(function(p,i) {
+              var col = TYPE_COLORS[p.type] || "#2C5F7C";
+              var icon = TYPE_ICONS[p.type] || "P";
+              var isEx = expanded === p.name + i;
+              return <div key={p.name+i} onClick={function(){setExpanded(isEx?null:p.name+i)}} style={{background:isEx?"#f8f8f8":"#fff",border:"1px solid "+(isEx?"#ccc":"#eee"),borderRadius:10,padding:20,cursor:"pointer",position:"relative",overflow:"hidden",animation:"fadeIn .3s ease "+i*0.02+"s both"}}>
+                <div style={{position:"absolute",top:0,left:0,width:3,height:"100%",background:col}}/>
+                <div style={{paddingLeft:8}}>
+                  <div style={{display:"flex",alignItems:"flex-start",gap:10}}>
+                    <div style={{width:32,height:32,borderRadius:6,background:col+"15",color:col,display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,fontWeight:700,flexShrink:0}}>{icon}</div>
+                    <div style={{flex:1,minWidth:0}}>
+                      <h3 style={{margin:0,fontSize:14,fontWeight:700,marginBottom:2}}>{p.name}</h3>
+                      <span style={{fontSize:10,fontWeight:600,letterSpacing:1.5,color:col,textTransform:"uppercase"}}>{p.type}</span>
+                    </div>
+                  </div>
+                  <div style={{marginTop:10,display:"flex",flexWrap:"wrap",gap:6}}>
+                    <span style={{fontSize:11,background:"#f0f0f0",padding:"3px 8px",borderRadius:4,color:"#666"}}>{p.ownership}</span>
+                    {p.capacity && <span style={{fontSize:11,background:"#f0f0f0",padding:"3px 8px",borderRadius:4,color:"#666"}}>{p.capacity} spaces</span>}
+                    {p.hours && <span style={{fontSize:11,background:"#f0f0f0",padding:"3px 8px",borderRadius:4,color:"#666"}}>{p.hours}</span>}
+                  </div>
+                  {p.rates && <p style={{margin:"8px 0 0",fontSize:12,color:"#555",fontWeight:500}}>{p.rates}</p>}
+                  {isEx && <div style={{marginTop:12,paddingTop:12,borderTop:"1px solid #eee"}}>
+                    {p.address && <p style={{margin:"0 0 6px",fontSize:13,color:"#666"}}>{p.address}</p>}
+                    <p style={{margin:"0 0 6px",fontSize:12,color:"#888"}}>{p.latitude.toFixed(6)}, {p.longitude.toFixed(6)}</p>
+                    {p.notes && <p style={{margin:"0 0 6px",fontSize:12,color:"#888",fontStyle:"italic"}}>{p.notes}</p>}
+                  </div>}
+                </div>
+              </div>;
+            })}
+          </div>
+        </div>}
+
+        {!results && !loading && <div style={{textAlign:"center",padding:"40px 20px 80px"}}>
+          <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(140px,1fr))",gap:14,maxWidth:640,margin:"0 auto"}}>
+            {["Garages","Surface Lots","Metered Zones","Park & Ride","Event Parking","Airport","Hospital","Municipal"].map(function(l,i) { return <div key={l} style={{background:"#f8f8f8",border:"1px solid #eee",borderRadius:10,padding:"22px 14px",animation:"fadeIn .4s ease "+i*0.06+"s both"}}>
+              <span style={{fontSize:11,fontWeight:600,letterSpacing:1,color:"#888",textTransform:"uppercase"}}>{l}</span>
+            </div>; })}
+          </div>
+          <p style={{color:"#bbb",fontSize:13,marginTop:24}}>Search a city above to discover all parking facilities</p>
+        </div>}
+
+        <footer style={{borderTop:"1px solid #eee",padding:"24px 0",marginTop:40,textAlign:"center"}}>
+          <img src={LOGO} alt="Merje" style={{height:20,opacity:0.4}}/>
+        </footer>
+      </div>
+    </div>
+  );
+}
+
+
+
+ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App));
+</script>
+</body>
+</html>
